@@ -2,18 +2,8 @@ const MetalRate = require("../models/metalRate");
 
 
 const getMetalRate = async (req, res) => {
-    // try {
-    //     let metalRateList = await MetalRate.find()
-    //     if (!metalRateList) {
-    //         return res.status(404).json({ message: "No MetalRate Found" });
-    //     }
-    //     return res.status(200).json({ metalRateList });
-    // }
-    // catch (err) {
-    //     res.status(500).json({ message: error.message });
-    // }
-
-    const { metal, purity, page = 1, limit = 5 } = req.query;
+    const { metal, purity, page = 1 } = req.query;
+    const limit = 10; 
     const query = {};
     if (metal) query.metal = metal;
     if (purity) query.purity = purity;
@@ -22,11 +12,16 @@ const getMetalRate = async (req, res) => {
         const rates = await MetalRate.find(query)
             .sort({ date: -1 })
             .skip((page - 1) * limit)
-            .limit(Number(limit));
+            .limit(limit);
 
         const total = await MetalRate.countDocuments(query);
 
-        return res.status(200).json({ data: rates, total });
+        return res.status(200).json({
+            data: rates,
+            total,
+            currentPage: Number(page),
+            totalPages: Math.ceil(total / limit),
+        });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
