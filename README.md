@@ -3,7 +3,7 @@
 This is the backend server built with Node.js and Express.js for managing Metals, Purity, and Rates.
 
 ## 🔐 Features
-
+- User register and login user
 - CRUD for Purity (linked to static Metal list)
 - Add Metal Rates with historical tracking
 - MongoDB with Mongoose
@@ -13,6 +13,5 @@ This is the backend server built with Node.js and Express.js for managing Metals
 ## ⚙️ Setup Instructions
 
 ```bash
-cd backend
 npm install
 npm start
