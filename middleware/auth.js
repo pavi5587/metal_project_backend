@@ -1,16 +1,18 @@
 const jwt = require("jsonwebtoken");
-const secretKey = require("./crypto");
+require('dotenv').config();
+
+
 
 const authenticateToken = (req, res, next) => {
-    const token = req.header("Authorization");
-    if (!token) return res.status(401).json({ message: "Access Denied" });
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided" });
 
     try {
-        const verified = jwt.verify(token.split(" ")[1], secretKey);
-        req.user = verified;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
         next();
-    } catch (error) {
-        res.status(400).json({ message: "Invalid Token" });
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid Token" });
     }
 };
 

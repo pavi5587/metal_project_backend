@@ -5,6 +5,9 @@ const metalRateRouter = require("./routes/metalRateRoutes")
 const userRouter = require("./routes/userroutes")
 
 require("./db");
+require('dotenv').config();
+
+
 
 const app = express();
 app.use(cors());

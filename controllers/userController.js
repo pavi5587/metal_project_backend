@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const secretKey = require("../middleware/crypto");
+require('dotenv').config();
+
+console.log("process.env.JWT_SECRET",process.env.JWT_SECRET);
 
 const postUser = async (req, res) => {
     const { name, email, mobileNumber, password, country, city, state, gender } =
@@ -41,9 +43,10 @@ const getUser = async (req, res) => {
 
     const token = jwt.sign(
         { id: user._id, email: user.email },
-        secretKey,
-        { expiresIn: "1d" } // Token expires in 1 day
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" } 
     );
+    
 
     res.json({ token, user });
 };
